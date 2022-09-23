@@ -1,0 +1,35 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Appetite",
+    "description": "ShoppingList-object which contains GroceryItem-objects",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "The name of the ShoppingList object",
+            "type": "string"
+        },
+        "groceryItems": {
+            "description": "Array of GroceryItem objects",
+            "type": "array",
+            "uniqueItems" : true,
+            "items": {
+                "properties": {
+                    "item": {
+                        "description": "The name of the GroceryItem object",
+                        "type": "string"
+                    },
+                    "units": {
+                        "description": "How many of this GroceryItem to purchase",
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "checked": {
+                        "description": "Whether the GroceryItem is ticked off or not",
+                        "type": "boolean"
+                    }
+                },
+                "required": ["item", "units", "checked"]
+            }
+        }
+    }
+}

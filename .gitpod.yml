@@ -1,0 +1,30 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - name: Test for react med Cypress
+    init: cd appetite-klient && sudo apt update && sudo apt-get install libnss3 -y && sudo apt-get install -y libgbm-dev
+    command: gp sync-done Cypress-libs;
+             gp sync-await npm-start && npm run cypress-cli
+
+
+
+  - name: React
+    init: gp sync-await maven && gp sync-await Cypress-libs && cd appetite-klient && npm install
+    command: cd src; echo "export const localhost = '` gp url 8080`'" > localhost.js; cd ..;
+             npm start & sleep 10 && gp sync-done npm-start
+
+  - name: Spring boot
+    init: sdk use java 16.0.1.hs-adpt && cd appetite-server && mvn install -DskipTests
+    command: 
+             gp sync-done maven;
+             cd restapi; 
+             mvn spring-boot:run
+
+ports:
+  # used by virtual desktop and vnc, supports JavaFX
+  - port: 6080
+  - port: 8080
+    visibility: public
+  - port: 3000
+    visibility: public

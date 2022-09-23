@@ -1,0 +1,153 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>gr2158</groupId>
+    <artifactId>appetite</artifactId>
+    <version>1.0-release3</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>core</module>
+        <module>ui</module>
+        <module>json</module>
+        <module>restapi</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
+        <skipTests>false</skipTests>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- JUnit5 testing -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>5.7.2</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>5.7.2</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>5.7.2</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+
+                <!-- Compiling code -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <release>16</release>
+                    </configuration>
+                </plugin>
+
+                <!-- Running tests -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M5</version>
+                    <configuration>
+                        <skipTests>${skipTests}</skipTests>
+                    </configuration>
+                </plugin>
+            </plugins>
+
+        </pluginManagement>
+
+        <plugins>
+
+            <!-- Check for bugs using spotbugs-->
+            <plugin>
+                 <groupId>com.github.spotbugs</groupId>
+                 <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.2.0</version>
+                <configuration>
+                    <excludeFilterFile>config/spotbugs/spotbugsExcludeFilter.xml</excludeFilterFile>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                      <groupId>com.github.spotbugs</groupId>
+                      <artifactId>spotbugs</artifactId>
+                      <version>4.4.1</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>spotbugs-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- JaCoCo code coverage -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.6</version>
+                <executions>
+                    <execution>
+                        <id>jacoco-prepare-agent</id>
+                        <phase>process-test-clNP-hardhet og NP-kompletthets</phase>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Run the checkstyle code quality tool -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <configLocation>config/checkstyle/google_checks.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <linkXRef>false</linkXRef>
+                </configuration>
+                <executions>
+                    <execution>
+                    <id>checkstyle-check</id>
+                    <phase>verify</phase>
+                    <goals>
+                        <goal>check</goal>
+                    </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
